@@ -30,11 +30,13 @@ function Join-File {
         [String]$FirstChunkFilePath
     )
 
-    $oStream = [System.IO.File]::OpenWrite($FirstChunkFilePath)
+    $filePath = $FirstChunkFilePath.Replace('.chunk0','')
+
+    $oStream = [System.IO.File]::OpenWrite($filePath)
     $chunkCount = 0
 
-    while (Test-Path -Path ("{0}.chunk{1}" -f $FirstChunkFilePath, $chunkCount)) {
-        $bytesRead = [System.IO.File]::ReadAllBytes(("{0}.chunk{1}" -f $FirstChunkFilePath, $chunkCount))
+    while (Test-Path -Path ("{0}.chunk{1}" -f $filePath, $chunkCount)) {
+        $bytesRead = [System.IO.File]::ReadAllBytes(("{0}.chunk{1}" -f $filePath, $chunkCount))
         $oStream.Write($bytesRead, 0, $bytesRead.Count)
         $chunkCount += 1
     }
