@@ -17,9 +17,7 @@ function Split-File {
         Select-Object -ExpandProperty Length
 
     $nChunks = [math]::Round($fileLength / $ChunkBytes)
-    $divRem = 0
-    [math]::DivRem($fileLength, $ChunkBytes, [ref]$divRem)
-    if ($divRem -gt 0) {
+    if (($fileLength % $ChunkBytes) -ne 0) {
         $nChunks += 1
     }
 
